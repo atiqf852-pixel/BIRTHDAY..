@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Noor Ul Aien ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+body{
+  overflow-x:hidden;
+  font-family:'Plus Jakarta Sans',sans-serif;
+  background:#000;
+}
+
+/* ===========================
+   BACKGROUND
+=========================== */
+.background{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  z-index:-2;
+}
+.background img{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center 20%;
+  filter:blur(6px) brightness(.4);
+  opacity:0;
+  transition:opacity 1.8s ease;
+}
+.background img.active{
+  opacity:1;
+}
+.overlay{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:linear-gradient(rgba(11,12,16,.45),rgba(11,12,16,.8));
+}
+
+/* Stars */
+.star{
+  position:absolute;
+  background:white;
+  border-radius:50%;
+  animation:twinkle 2s infinite alternate;
+}
+@keyframes twinkle{
+  from{ opacity:.2; transform:scale(.7); }
+  to{ opacity:1; transform:scale(1.2); }
+}
+
+/* ===========================
+   WELCOME SCREEN
+=========================== */
+#welcome{
+  display:none;
+  height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+  padding:20px;
+  color:white;
+}
+h1{
+  font-family:'Playfair Display',serif;
+  font-size:70px;
+  text-shadow:0 0 15px white, 0 0 30px gold, 0 0 60px #7B61FF;
+}
+p{
+  margin-top:20px;
+  font-size:22px;
+  color:#ddd;
+  max-width:650px;
+  line-height:1.7;
+}
+button{
+  margin-top:45px;
+  padding:18px 45px;
+  border:none;
+  border-radius:60px;
+  font-size:20px;
+  font-weight:bold;
+  cursor:pointer;
+  color:white;
+  background:linear-gradient(45deg,#D4AF37,#FF6F61);
+  transition:.35s;
+  box-shadow:0 0 25px gold;
+}
+button:hover{
+  transform:scale(1.08);
+  box-shadow:0 0 50px #FF6F61;
+}
+
+/* ===========================
+   COUNTDOWN SCREEN
+=========================== */
+.countdown-screen{
+  display:none;
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  background:radial-gradient(circle at center, rgba(123,97,255,.18), rgba(0,0,0,.92));
+}
+.countdown-ring{
+  width:220px;
+  height:220px;
+  border-radius:50%;
+  border:3px solid rgba(212,175,55,.5);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  box-shadow:0 0 40px rgba(212,175,55,.4), inset 0 0 30px rgba(123,97,255,.3);
+}
+.countdown-number{
+  font-family:'Playfair Display',serif;
+  font-size:100px;
+  font-weight:800;
+  text-shadow:0 0 20px white, 0 0 40px gold;
+}
+.countdown-number.pulse{
+  animation:pulseNum .6s ease-out;
+}
+@keyframes pulseNum{
+  0%{ transform:scale(1.5); opacity:0; }
+  100%{ transform:scale(1); opacity:1; }
+}
+.countdown-label{
+  margin-top:25px;
+  font-size:20px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+  color:#FFD700;
+}
+
+/* ===========================
+   MAIN SCREEN
+=========================== */
+#main{
+  display:none;
+  min-height:100vh;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+  padding:40px;
+  color:white;
+  position:relative;
+  animation:fadeUp 2s;
+}
+.birthdayTitle{
+  font-size:80px;
+  font-family:'Playfair Display',serif;
+  color:white;
+  text-shadow:0 0 20px white, 0 0 35px gold, 0 0 80px #7B61FF, 0 0 120px cyan;
+  animation:glow 3s infinite alternate;
+}
+.subtitle{
+  margin-top:20px;
+  font-size:34px;
+  color:#FFD700;
+}
+.message{
+  margin-top:35px;
+  max-width:800px;
+  font-size:22px;
+  line-height:1.8;
+  color:#eee;
+}
+.celebrateBtn{
+  margin-top:40px;
+  padding:18px 45px;
+  border:none;
+  cursor:pointer;
+  border-radius:50px;
+  font-size:22px;
+  font-weight:bold;
+  color:white;
+  background:linear-gradient(45deg,#D4AF37,#FF6F61);
+  box-shadow:0 0 25px gold;
+  transition:.4s;
+}
+.celebrateBtn:hover{
+  transform:scale(1.1);
+}
+@keyframes fadeUp{
+  from{ opacity:0; transform:translateY(60px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+@keyframes glow{
+  from{ filter:hue-rotate(0deg); }
+  to{ filter:hue-rotate(35deg); }
+}
+
+/* ===========================
+   BALLOONS
+=========================== */
+.balloons{
+  position:fixed;
+  left:0;
+  top:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  overflow:hidden;
+  z-index:1;
+}
+.balloon{
+  position:absolute;
+  bottom:-200px;
+  width:80px;
+  height:100px;
+  border-radius:50%;
+  animation:floatBalloon linear infinite;
+  box-shadow:0 0 30px rgba(255,255,255,.4);
+}
+.balloon::after{
+  content:"";
+  position:absolute;
+  width:2px;
+  height:120px;
+  background:white;
+  left:50%;
+  top:100%;
+}
+.b1{ left:8%;  background:#FF6F61; animation-duration:15s; }
+.b2{ left:24%; background:#D4AF37; animation-duration:18s; }
+.b3{ left:40%; background:#7B61FF; animation-duration:16s; }
+.b4{ left:58%; background:#00E5FF; animation-duration:17s; }
+.b5{ left:76%; background:#FF9EAA; animation-duration:19s; }
+.b6{ left:90%; background:#FFD700; animation-duration:14s; }
+@keyframes floatBalloon{
+  0%{ transform:translateY(0); }
+  100%{ transform:translateY(-130vh); }
+}
+
+/* ===========================
+   SPARKLES
+=========================== */
+#sparkles{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:1;
+}
+.sparkle{
+  position:absolute;
+  border-radius:50%;
+  background:white;
+  box-shadow:0 0 10px white, 0 0 25px gold;
+  animation:twinkle 2s infinite;
+}
+
+/* ===========================
+   CAKE
+=========================== */
+.cake-container{
+  margin:40px 0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  z-index:2;
+}
+.cake{
+  position:relative;
+  cursor:pointer;
+  transition:.4s;
+}
+.cake:hover{
+  transform:scale(1.05);
+}
+.layer{
+  border-radius:12px;
+  background:linear-gradient(#ffb6c1,#ff6f61);
+  box-shadow:0 0 20px rgba(255,255,255,.25);
+}
+.bottom{ width:260px; height:70px; }
+.middle{ width:210px; height:60px; margin:auto; margin-top:-8px; }
+.top{ width:160px; height:50px; margin:auto; margin-top:-8px; }
+.candles{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin-bottom:8px;
+}
+.candle{
+  width:10px;
+  height:40px;
+  background:white;
+  position:relative;
+}
+.flame{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  top:-18px;
+  width:14px;
+  height:18px;
+  background:gold;
+  border-radius:50%;
+  box-shadow:0 0 15px gold, 0 0 30px orange, 0 0 60px yellow;
+  animation:flicker .2s infinite alternate;
+}
+@keyframes flicker{
+  from{ transform:translateX(-50%) scale(1); }
+  to{ transform:translateX(-50%) scale(.8); }
+}
+.cakeText{
+  margin-top:25px;
+  font-size:20px;
+  color:#FFD700;
+}
+
+/* ===========================
+   GLASS CARD / WISH
+=========================== */
+.glass-card{
+  margin:60px auto;
+  width:min(850px,90%);
+  padding:40px;
+  border-radius:25px;
+  background:rgba(255,255,255,.08);
+  backdrop-filter:blur(18px);
+  border:1px solid rgba(255,255,255,.2);
+  box-shadow:0 0 30px rgba(212,175,55,.25);
+  text-align:center;
+  animation:fadeUp 1.5s;
+  z-index:2;
+}
+.glass-card h2{
+  font-size:40px;
+  margin-bottom:25px;
+  color:#FFD700;
+  font-family:'Playfair Display',serif;
+}
+.glass-card p{
+  font-size:20px;
+  line-height:1.9;
+  color:#F5F5F5;
+}
+
+/* ===========================
+   ROSE PETALS
+=========================== */
+.petal{
+  position:fixed;
+  top:-50px;
+  width:18px;
+  height:24px;
+  background:#ff6f91;
+  border-radius:50% 50% 50% 0;
+  transform:rotate(45deg);
+  opacity:.8;
+  pointer-events:none;
+  animation:fall linear forwards;
+  z-index:1;
+}
+@keyframes fall{
+  0%{ transform:translateY(0) rotate(0deg); opacity:1; }
+  100%{ transform:translateY(110vh) rotate(720deg); opacity:0; }
+}
+
+/* ===========================
+   GLOWING BORDER
+=========================== */
+body::after{
+  content:"";
+  position:fixed;
+  top:10px;
+  left:10px;
+  right:10px;
+  bottom:10px;
+  border:2px solid rgba(212,175,55,.35);
+  border-radius:25px;
+  pointer-events:none;
+  box-shadow:0 0 30px rgba(212,175,55,.3);
+  z-index:9998;
+}
+
+/* ===========================
+   MUSIC PLAYER
+=========================== */
+.music{
+  position:fixed;
+  right:25px;
+  bottom:25px;
+  z-index:9999;
+}
+.music button{
+  margin-top:0;
+  padding:15px 25px;
+  border:none;
+  cursor:pointer;
+  border-radius:50px;
+  font-size:18px;
+  font-weight:bold;
+  background:linear-gradient(45deg,#D4AF37,#FF6F61);
+  color:white;
+  box-shadow:0 0 25px gold;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+footer{
+  padding:60px;
+  text-align:center;
+  font-size:20px;
+  color:#ddd;
+  width:100%;
+  z-index:2;
+}
+
+@media (max-width:700px){
+  h1, .birthdayTitle{ font-size:40px; }
+  .subtitle{ font-size:24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="background">
+  <img id="bgPhoto1" src="noor-photo.png" class="active">
+  <img id="bgPhoto2" src="noor-photo2.png">
+  <div class="overlay"></div>
+</div>
+
+<!-- Welcome Screen -->
+<div id="welcome">
+  <h1>A Special Surprise Awaits...</h1>
+  <p>
+    Someone very special deserves something beautiful.
+    Click below to open your birthday surprise.
+  </p>
+  <button onclick="openGift()">✨ Open Your Surprise ✨</button>
+</div>
+
+<!-- Countdown Screen -->
+<div id="countdown" class="countdown-screen">
+  <div class="countdown-ring">
+    <div id="countdownNumber" class="countdown-number">10</div>
+  </div>
+  <p class="countdown-label">Get ready...</p>
+</div>
+
+<!-- Main Celebration Screen -->
+<div id="main">
+
+  <div class="balloons">
+    <div class="balloon b1"></div>
+    <div class="balloon b2"></div>
+    <div class="balloon b3"></div>
+    <div class="balloon b4"></div>
+    <div class="balloon b5"></div>
+    <div class="balloon b6"></div>
+  </div>
+  <div id="sparkles"></div>
+
+  <h1 class="birthdayTitle">🎉 Happy Birthday<br>Noor Ul Aien</h1>
+  <h2 class="subtitle">The Light Of My World ✨</h2>
+  <p class="message">
+    May your smile always shine brighter than every star,
+    your dreams become reality,
+    and your heart always stay full of happiness.
+    Happy Birthday ❤️
+  </p>
+  <button class="celebrateBtn" onclick="launchConfetti()">Celebrate 🎆</button>
+
+  <div class="cake-container">
+    <div class="cake" onclick="blowCandles()">
+      <div class="candles">
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+        <div class="candle"><div class="flame"></div></div>
+      </div>
+      <div class="layer top"></div>
+      <div class="layer middle"></div>
+      <div class="layer bottom"></div>
+    </div>
+    <p class="cakeText">🎂 Click the Cake to Blow Out the Candles 🎂</p>
+  </div>
+
+  <div class="glass-card">
+    <h2>💖 A Special Wish 💖</h2>
+    <p>
+      Happy Birthday, Noor Ul Aien! 🌸<br><br>
+      May Allah bless you with endless happiness,
+      good health, success, and countless beautiful memories.
+      May every dream in your heart come true,
+      and may your smile continue to brighten the lives of everyone around you.
+      Stay happy, stay blessed, and keep shining like the brightest star.
+      ✨ Happy Birthday! ✨
+    </p>
+  </div>
+  <div id="petals"></div>
+
+  <footer>
+    Made with ❤️ especially for Noor Ul Aien
+  </footer>
+
+</div>
+
+<div class="music">
+  <button id="musicBtn">🎵 Play Music</button>
+  <audio id="song">
+    <source src="birthday.mp3" type="audio/mpeg">
+  </audio>
+</div>
+
+<script>
+/* ===========================
+   STARS
+=========================== */
+for(let i=0;i<150;i++){
+  let star=document.createElement("div");
+  star.className="star";
+  star.style.width=Math.random()*3+2+"px";
+  star.style.height=star.style.width;
+  star.style.left=Math.random()*100+"%";
+  star.style.top=Math.random()*100+"%";
+  star.style.animationDelay=Math.random()*3+"s";
+  document.body.appendChild(star);
+}
+
+/* ===========================
+   AUDIO TIMING
+   - First 12s of the track is sped up
+     to fit the 10s countdown window
+   - After that it continues at normal
+     speed without restarting
+   - When it loops, it skips back to
+     the 13s mark instead of 0
+=========================== */
+let audioStarted=false;
+
+function startIntroAudio(){
+  const song=document.getElementById("song");
+  if(!song || audioStarted) return;
+  audioStarted=true;
+  song.currentTime=0;
+  song.playbackRate=1.2; // 12s of audio compressed into the 10s countdown
+  song.play().then(()=>{
+    playing=true;
+    btn.innerHTML="⏸ Pause Music";
+  }).catch(()=>{
+    audioStarted=false; // browser blocked autoplay; retry on the button click
+  });
+}
+
+function normalizeAudioSpeed(){
+  const song=document.getElementById("song");
+  if(!song) return;
+  song.playbackRate=1.0;
+  if(song.currentTime<12){
+    song.currentTime=12;
+  }
+}
+
+
+/* ===========================
+   OPEN GIFT (welcome -> main)
+=========================== */
+function openGift(){
+  const welcome=document.getElementById("welcome");
+  welcome.style.transition="1s";
+  welcome.style.opacity="0";
+  welcome.style.transform="scale(1.1)";
+  setTimeout(()=>{
+    welcome.style.display="none";
+    document.getElementById("main").style.display="flex";
+    document.getElementById("bgPhoto1").classList.remove("active");
+    document.getElementById("bgPhoto2").classList.add("active");
+    launchConfetti();
+
+    const song=document.getElementById("song");
+    if(!playing){
+      // audio never started (autoplay was blocked) - start it now
+      // from the 12s mark so we don't replay the sped-up intro late
+      song.currentTime=Math.max(song.currentTime,12);
+      song.playbackRate=1.0;
+      song.play().then(()=>{
+        playing=true;
+        btn.innerHTML="⏸ Pause Music";
+      }).catch(()=>{});
+    }
+  },1000);
+}
+
+/* ===========================
+   COUNTDOWN ON PAGE LOAD
+=========================== */
+function startCountdown(){
+  const cd=document.getElementById("countdown");
+  const numEl=document.getElementById("countdownNumber");
+  let n=10;
+  numEl.textContent=n;
+  cd.style.display="flex";
+  startIntroAudio();
+
+  const timer=setInterval(()=>{
+    n--;
+    if(n>0){
+      numEl.textContent=n;
+      numEl.classList.remove("pulse");
+      void numEl.offsetWidth;
+      numEl.classList.add("pulse");
+    }else{
+      clearInterval(timer);
+      cd.style.display="none";
+      normalizeAudioSpeed();
+      const welcome=document.getElementById("welcome");
+      welcome.style.display="flex";
+      welcome.style.opacity="0";
+      requestAnimationFrame(()=>{
+        welcome.style.transition="1s";
+        welcome.style.opacity="1";
+      });
+    }
+  },1000);
+}
+window.addEventListener("load",startCountdown);
+
+/* ===========================
+   CONFETTI
+=========================== */
+function launchConfetti(){
+  confetti({
+    particleCount:250,
+    spread:180,
+    origin:{y:0.6}
+  });
+}
+
+/* ===========================
+   BLOW OUT CANDLES
+=========================== */
+function blowCandles(){
+  document.querySelectorAll(".flame").forEach(flame=>{
+    flame.style.display="none";
+  });
+  confetti({
+    particleCount:500,
+    spread:180,
+    origin:{y:.55}
+  });
+  setTimeout(()=>{
+    alert("🎉 Happy Birthday Noor Ul Aien! 🎂❤️");
+  },800);
+}
+
+/* ===========================
+   SPARKLES
+=========================== */
+const sparkleContainer=document.getElementById("sparkles");
+for(let i=0;i<120;i++){
+  const s=document.createElement("div");
+  s.className="sparkle";
+  const size=Math.random()*5+2;
+  s.style.width=size+"px";
+  s.style.height=size+"px";
+  s.style.left=Math.random()*100+"%";
+  s.style.top=Math.random()*100+"%";
+  s.style.animationDelay=Math.random()*3+"s";
+  sparkleContainer.appendChild(s);
+}
+
+/* ===========================
+   ROSE PETALS
+=========================== */
+function createPetal(){
+  const petal=document.createElement("div");
+  petal.className="petal";
+  petal.style.left=Math.random()*100+"vw";
+  petal.style.animationDuration=(Math.random()*4+5)+"s";
+  petal.style.opacity=Math.random();
+  document.body.appendChild(petal);
+  setTimeout(()=>{
+    petal.remove();
+  },9000);
+}
+setInterval(createPetal,300);
+
+/* ===========================
+   MUSIC PLAYER
+=========================== */
+const btn=document.getElementById("musicBtn");
+const song=document.getElementById("song");
+let playing=false;
+btn.onclick=function(){
+  if(!playing){
+    song.play();
+    btn.innerHTML="⏸ Pause Music";
+    playing=true;
+  }else{
+    song.pause();
+    btn.innerHTML="🎵 Play Music";
+    playing=false;
+  }
+}
+
+// When the track finishes, loop back to the 13s mark
+// instead of replaying the intro from the start
+song.addEventListener("ended",()=>{
+  song.playbackRate=1.0;
+  song.currentTime=13;
+  song.play().catch(()=>{});
+  playing=true;
+  btn.innerHTML="⏸ Pause Music";
+});
+
+/* ===========================
+   AUTO FIREWORKS
+=========================== */
+setInterval(()=>{
+  if(document.getElementById("main").style.display==="flex"){
+    confetti({
+      particleCount:150,
+      spread:120,
+      origin:{
+        x:Math.random(),
+        y:Math.random()/2
+      }
+    });
+  }
+},5000);
+
+/* ===========================
+   MOUSE GLOW
+=========================== */
+const glow=document.createElement("div");
+glow.style.position="fixed";
+glow.style.width="180px";
+glow.style.height="180px";
+glow.style.borderRadius="50%";
+glow.style.pointerEvents="none";
+glow.style.background="radial-gradient(circle, rgba(255,215,0,.25), transparent 70%)";
+glow.style.transform="translate(-50%,-50%)";
+glow.style.zIndex="999";
+document.body.appendChild(glow);
+document.addEventListener("mousemove",(e)=>{
+  glow.style.left=e.clientX+"px";
+  glow.style.top=e.clientY+"px";
+});
+</script>
+</body>
+</html>
